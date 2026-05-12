@@ -11,6 +11,9 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
         }
         h1, h2 {
             text-align: center;
@@ -44,13 +47,39 @@
             border-radius: 4px;
             word-break: break-word;
         }
+        /* Effetto pioggia di codice */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+        /* Selettore del tema sempre visibile */
         #theme-selector {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             z-index: 2;
+            background-color: #111;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 5px;
+            border-radius: 4px;
         }
-        /* Altri stili verranno applicati dinamicamente via JavaScript */
+        /* Adattamenti per dispositivi mobili */
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.4em;
+            }
+            button, textarea {
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -60,9 +89,6 @@
         <option value="terminator">Terminator</option>
         <option value="zombie">Zombie</option>
     </select>
-    
-    <!-- Canvas per l'animazione -->
-    <canvas id="animation-canvas"></canvas>
     
     <!-- Contenuto principale -->
     <div class="container">
@@ -83,6 +109,9 @@
         </div>
     </div>
     
+    <!-- Canvas per l'animazione -->
+    <canvas id="matrix"></canvas>
+    
     <script>
         // Variabile per mantenere traccia del tema corrente
         let currentTheme = 'matrix';
@@ -91,7 +120,7 @@
         const body = document.body;
         const container = document.querySelector('.container');
         const themeSelector = document.getElementById('theme-selector');
-        const canvas = document.getElementById('animation-canvas');
+        const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
         // Imposta le dimensioni del canvas
@@ -244,7 +273,7 @@
             body.style.color = themeData.colors.textColor;
             container.style.backgroundColor = themeData.colors.inputBackground;
             container.style.boxShadow = `0 0 15px ${themeData.colors.buttonHover}`;
-            
+
             // Aggiorna gli stili degli elementi
             document.querySelectorAll('textarea, .output').forEach(el => {
                 el.style.backgroundColor = themeData.colors.inputBackground;
